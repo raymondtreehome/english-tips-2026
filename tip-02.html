@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>錦囊 貳 ‧ 時態 × 被動 ‧ 複合陷阱</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { padding-bottom: 80px; }
+  .page { max-width: 1080px; margin: 0 auto; padding: 36px 56px 60px; position: relative; z-index: 1; }
+
+  /* 頁眉 */
+  .topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--gold);
+    margin-bottom: 36px;
+  }
+  .home-link {
+    font-family: "Noto Serif TC", serif;
+    font-size: 14px;
+    color: var(--ink-soft);
+    letter-spacing: 0.3em;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .home-link:hover { color: var(--vermilion-deep); }
+  .home-link::before { content: "←"; font-family: serif; }
+  .pager {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+  }
+  .pager a { color: var(--ink-soft); margin: 0 6px; }
+  .pager a:hover { color: var(--vermilion-deep); }
+  .pager .cur { color: var(--vermilion-deep); font-weight: 600; }
+
+  /* 主標 */
+  .hero-tip {
+    display: grid;
+    grid-template-columns: 110px 1fr auto;
+    gap: 28px;
+    align-items: center;
+    margin-bottom: 44px;
+    padding: 28px 0 36px;
+    border-bottom: 1px dashed var(--gold);
+  }
+  .big-num {
+    display: grid;
+    place-items: center;
+    width: 110px; height: 110px;
+    border: 2px solid var(--vermilion);
+    background: var(--vermilion);
+    color: #f8e9c4;
+    font-family: "Noto Serif TC", serif;
+    font-weight: 900;
+    font-size: 56px;
+    line-height: 1;
+    box-shadow: 4px 4px 0 var(--gold);
+    transform: rotate(-2deg);
+  }
+  .titles h1 {
+    margin: 0 0 8px;
+    font-family: "Noto Serif TC", serif;
+    font-weight: 900;
+    font-size: 38px;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .titles .en {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+  }
+  .titles .crumb {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.3em;
+    margin-bottom: 8px;
+  }
+
+  /* 區塊 */
+  .block { margin-bottom: 36px; }
+  .block-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .block-tag {
+    background: var(--ink);
+    color: var(--paper-soft);
+    font-family: "Noto Serif TC", serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.4em;
+    padding: 6px 14px 6px 18px;
+  }
+  .block-tag.tag-jade { background: var(--jade); }
+  .block-yr {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--vermilion-deep);
+  }
+
+  /* 心法 box */
+  .method-box {
+    background: #fffaee;
+    border: 1px solid var(--gold);
+    box-shadow: 5px 5px 0 var(--paper-deep);
+    padding: 24px 28px;
+    font-family: "Noto Serif TC", serif;
+    font-size: 19px;
+    line-height: 1.9;
+    color: var(--ink);
+    position: relative;
+  }
+  .method-box::before {
+    content: "心 法";
+    position: absolute;
+    top: -14px; left: 24px;
+    background: var(--vermilion);
+    color: #fff8e6;
+    padding: 4px 14px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5em;
+    text-indent: 0.5em;
+  }
+  mark {
+    background: linear-gradient(transparent 55%, rgba(212,176,106,0.7) 55%);
+    color: var(--ink);
+    padding: 0 3px;
+  }
+  code {
+    font-family: "JetBrains Mono", monospace;
+    background: rgba(74,58,38,0.08);
+    color: var(--vermilion-deep);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.92em;
+  }
+
+  /* 表格 */
+  .rule-tab {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 17px;
+  }
+  .rule-tab th {
+    background: var(--ink);
+    color: var(--paper-soft);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+  }
+  .rule-tab td {
+    padding: 8px 12px;
+    border-bottom: 1px dotted var(--gold);
+  }
+  .rule-tab td:first-child {
+    font-weight: 700;
+    color: var(--vermilion-deep);
+    width: 80px;
+  }
+
+  /* Chip */
+  .chip {
+    display: inline-block;
+    background: var(--vermilion);
+    color: #fff8e6;
+    padding: 4px 12px;
+    margin: 3px 4px 3px 0;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+  }
+  .hint {
+    margin-top: 12px;
+    font-size: 16px;
+    color: var(--vermilion-deep);
+    font-style: italic;
+  }
+  .big-that {
+    display: inline-block;
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 30px;
+    color: var(--vermilion);
+    font-weight: 700;
+    vertical-align: middle;
+    margin: 0 6px;
+  }
+
+  /* 試題 */
+  .quiz {
+    background: var(--paper-soft);
+    border-left: 4px solid var(--vermilion);
+    padding: 20px 24px;
+    font-family: "Lora", "Noto Serif TC", serif;
+    font-size: 22px;
+    line-height: 1.6;
+    color: var(--ink);
+    margin: 0 0 18px;
+  }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--vermilion);
+    min-width: 100px;
+    text-align: center;
+    margin: 0 6px;
+    color: var(--vermilion);
+  }
+  .options {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 24px;
+  }
+  .opt {
+    font-family: "Lora", "Noto Serif TC", serif;
+    font-size: 18px;
+    color: var(--ink-soft);
+    padding: 10px 14px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .opt-k {
+    font-weight: 700;
+    color: var(--ink);
+    font-family: "Lora", serif;
+  }
+  .opt.correct {
+    border: 1px solid var(--jade);
+    background: rgba(74,107,77,0.06);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .opt.correct .opt-k { color: var(--jade); }
+  .opt-mark {
+    margin-left: auto;
+    font-family: "Noto Serif TC", serif;
+    font-size: 13px;
+    color: var(--jade);
+    letter-spacing: 0.2em;
+    font-weight: 700;
+  }
+
+  /* 解析 */
+  .steps {
+    list-style: none;
+    margin: 0; padding: 0;
+    counter-reset: step;
+  }
+  .steps li {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 18px;
+    padding: 14px 0;
+    border-bottom: 1px dotted var(--gold);
+    font-size: 18px;
+    line-height: 1.7;
+  }
+  .steps li:last-child { border-bottom: 0; }
+  .step-n {
+    display: grid; place-items: center;
+    width: 32px; height: 32px;
+    background: var(--jade);
+    color: #fff8e6;
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-weight: 700;
+    border-radius: 50%;
+  }
+  .step-t em { font-style: normal; background: rgba(184,48,42,0.10); padding: 0 4px; }
+  .step-t strong { color: var(--vermilion-deep); }
+
+  /* 字義變身專用 */
+  .word-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  .wordcard {
+    background: #fffaee;
+    border: 1px solid var(--gold);
+    box-shadow: 4px 4px 0 var(--paper-deep);
+    padding: 18px 20px;
+  }
+  .wordcard-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted var(--gold);
+  }
+  .word {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--vermilion);
+  }
+  .word-yr {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.15em;
+  }
+  .word-row {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 12px;
+    font-size: 15px;
+    padding: 4px 0;
+  }
+  .word-row .lbl {
+    font-family: "Noto Serif TC", serif;
+    font-weight: 700;
+    color: var(--ink-soft);
+    letter-spacing: 0.2em;
+  }
+  .word-row.twist .lbl { color: var(--vermilion-deep); }
+  .word-row.twist .val { color: var(--ink); font-weight: 600; }
+  .word-ex {
+    margin: 10px 0 0;
+    padding: 10px 12px;
+    background: var(--paper);
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.5;
+    border-left: 3px solid var(--gold);
+  }
+  .word-ex strong { color: var(--vermilion); font-style: normal; }
+
+  /* 頁腳 */
+  .nav-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 56px;
+    padding-top: 28px;
+    border-top: 1px solid var(--gold);
+  }
+  .nav-bottom a {
+    font-family: "Noto Serif TC", serif;
+    font-size: 14px;
+    color: var(--ink-soft);
+    letter-spacing: 0.3em;
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .nav-bottom a:hover { color: var(--vermilion-deep); }
+  .nav-bottom .home {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--gold);
+  }
+</style>
+</head>
+<body>
+
+<div class="page" data-screen-label="02 時態 × 被動 ‧ 複合陷阱">
+
+  <div class="topbar">
+    <a class="home-link" href="index.html">返　回　文　昌</a>
+    <div class="pager">
+      <a href="tip-01.html">01</a> · <span class="cur">02</span> · <a href="tip-03.html">03</a> · <a href="tip-04.html">04</a> · <a href="tip-05.html">05</a> · <a href="tip-06.html">06</a> · <a href="tip-07.html">07</a> · <a href="tip-08.html">08</a> · <a href="tip-09.html">09</a> · <a href="tip-10.html">10</a>
+    </div>
+  </div>
+
+  <div class="hero-tip">
+    <div class="big-num">貳</div>
+    <div class="titles">
+      <div class="crumb">錦  囊  之  貳  ／  II</div>
+      <h1>時態 × 被動 ‧ 複合陷阱</h1>
+      <div class="en">Tense × Passive</div>
+    </div>
+    <div class="seal seal-lg">貳</div>
+  </div>
+
+  <section class="block">
+    <div class="method-box">會考最愛考「時態」結合「被動」。先問兩件事：<br/>① 這件事 <mark>發生在何時</mark>？<br/>② 主詞是「人/物」，動作對它而言是 <mark>主動還是被動</mark>？</div>
+  </section>
+
+  
+    <section class="block quiz-block">
+      <div class="block-head">
+        <span class="block-tag">歷屆試題</span>
+        <span class="block-yr">108 會考</span>
+      </div>
+      <p class="quiz">
+        The last bus <span class="blank">&nbsp;</span> twenty minutes ago. We'll have to wait for another one.
+      </p>
+      <ul class="options">
+    <li class="opt correct">
+      <span class="opt-k">(A)</span>
+      <span class="opt-t">left</span>
+      <span class="opt-mark">✓ 解答</span>
+    </li>
+    <li class="opt ">
+      <span class="opt-k">(B)</span>
+      <span class="opt-t">was left</span>
+      
+    </li>
+    <li class="opt ">
+      <span class="opt-k">(C)</span>
+      <span class="opt-t">has left</span>
+      
+    </li>
+    <li class="opt ">
+      <span class="opt-k">(D)</span>
+      <span class="opt-t">is leaving</span>
+      
+    </li></ul>
+    </section>
+  
+    <section class="block">
+      <div class="block-head">
+        <span class="block-tag tag-jade">解 析</span>
+      </div>
+      <ol class="steps"><li><span class="step-n">1</span><span class="step-t">時態：<code>twenty minutes ago</code> → <strong>過去式</strong>。先刪 (C)(D)。</span></li><li><span class="step-n">2</span><span class="step-t">主動/被動：bus 自己「離開」，是<strong>主動</strong>動作，不可用被動。刪 (B)。</span></li><li><span class="step-n">3</span><span class="step-t">答案：(A) <code>left</code>。</span></li><li><span class="step-n">4</span><span class="step-t">對比：若主詞換成 <em>The window</em>、動詞是 break，則要用 <code>was broken</code>（窗戶被打破）。</span></li></ol>
+    </section>
+  
+
+  <nav class="nav-bottom">
+    <a href="tip-01.html">← 上一囊 ‧ 第 1 訣</a>
+    <a class="home" href="index.html">— 文昌錦囊 ‧ 十訣 —</a>
+    <a href="tip-03.html">下一囊 ‧ 第 3 訣 →</a>
+  </nav>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>文昌錦囊・會考英文必勝十訣</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="preload" href="deity-preload.webp" as="image">
+<link rel="preload" href=".image-slots.state.json" as="fetch" crossorigin="anonymous">
+<script src="image-slot.js"></script>
+<style>
+  body { overflow-x: hidden; }
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 40px 48px 80px;
+  }
+
+  /* 頂部橫額 */
+  .topbar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--gold);
+    margin-bottom: 56px;
+  }
+  .topbar .side {
+    font-family: "Noto Serif TC", serif;
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: var(--ink-soft);
+  }
+  .topbar .side.right { text-align: right; }
+  .topbar .brand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 14px;
+    color: var(--ink);
+  }
+  .topbar .brand .cn {
+    font-family: "Noto Serif TC", serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.4em;
+  }
+  .topbar .brand .en {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+
+  /* Hero 區 */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr 1fr;
+    gap: 32px;
+    align-items: end;
+    margin-bottom: 64px;
+  }
+  .hero-side {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 40px;
+  }
+  .hero-side.left {
+    align-items: flex-end;
+    text-align: right;
+  }
+  .couplet {
+    font-family: "Noto Serif TC", serif;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1.9;
+    color: var(--ink);
+    letter-spacing: 0.4em;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    border: 1px solid var(--vermilion);
+    background: var(--vermilion);
+    color: #f8e9c4;
+    padding: 32px 14px;
+    box-shadow: 3px 3px 0 var(--gold);
+    height: 360px;
+  }
+  .couplet.left  { margin-right: auto; }
+  .couplet.right { margin-left: auto; }
+
+  /* 中央：文昌帝君 */
+  .deity-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+  }
+  .deity-frame {
+    /* 預設比例：載入圖片後由 JS 依實際長寬比覆蓋 */
+    width: 380px;
+    height: 460px;
+    max-width: 460px;
+    max-height: 580px;
+    border: 1px solid var(--gold);
+    outline: 1px solid var(--gold);
+    outline-offset: 8px;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(255,236,180,0.6), transparent 70%),
+      linear-gradient(180deg, #fbecc1 0%, #e8c97b 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .deity-frame image-slot {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+  .deity-frame .deity-static {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .deity-frame .corner {
+    position: absolute;
+    width: 28px; height: 28px;
+    border: 2px solid var(--vermilion);
+  }
+  .deity-frame .corner.tl { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+  .deity-frame .corner.tr { top: 8px; right: 8px; border-left: 0; border-bottom: 0; }
+  .deity-frame .corner.bl { bottom: 8px; left: 8px; border-right: 0; border-top: 0; }
+  .deity-frame .corner.br { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+  .deity-frame .top-tag {
+    position: absolute;
+    top: 18px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--vermilion);
+    color: #f8e9c4;
+    padding: 6px 22px;
+    font-family: "Noto Serif TC", serif;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    font-size: 14px;
+    z-index: 2;
+  }
+
+  /* 對話框 */
+  .bubble {
+    position: relative;
+    background: #fffaee;
+    border: 1.5px solid var(--ink);
+    padding: 22px 28px 24px;
+    max-width: 460px;
+    box-shadow: 4px 4px 0 var(--gold);
+  }
+  .bubble::before {
+    content: "";
+    position: absolute;
+    top: -16px; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-bottom: 16px solid var(--ink);
+  }
+  .bubble::after {
+    content: "";
+    position: absolute;
+    top: -13px; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 14px solid #fffaee;
+  }
+  .bubble .cn {
+    font-family: "Noto Serif TC", serif;
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+    margin: 0 0 10px;
+    text-align: center;
+  }
+  .bubble .en {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--vermilion-deep);
+    text-align: center;
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+  .bubble .punct {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    margin: 0 8px;
+    transform: translateY(-4px);
+    border-radius: 50%;
+  }
+
+  /* 中段 SECTION 標題 */
+  .section-head {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 26px;
+    margin: 40px 0 36px;
+  }
+  .section-head .rule {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ink-soft), transparent);
+  }
+  .section-head .label {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-head .label .cn {
+    font-family: "Noto Serif TC", serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: 0.5em;
+    padding-left: 0.5em;
+    color: var(--ink);
+  }
+  .section-head .label .en {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+  }
+
+  /* 錦囊網格 */
+  .pouches {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 28px 18px;
+    margin-top: 8px;
+  }
+  .pouch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: transform .25s ease;
+  }
+  .pouch:hover { transform: translateY(-8px); }
+  .pouch:hover .pouch-svg { animation: sway 0.6s ease-in-out infinite alternate; }
+  .pouch:hover .pouch-title { color: var(--vermilion-deep); }
+  @keyframes sway {
+    from { transform: rotate(-3deg); }
+    to   { transform: rotate(3deg); }
+  }
+
+  .pouch-svg {
+    width: 130px;
+    height: auto;
+    transform-origin: top center;
+    filter: drop-shadow(2px 4px 6px rgba(60,30,10,0.25));
+  }
+
+  .pouch-meta {
+    margin-top: 14px;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .pouch-num {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    margin-bottom: 4px;
+  }
+  .pouch-title {
+    font-family: "Noto Serif TC", serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    transition: color .2s;
+  }
+  .pouch-en {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 3px;
+    letter-spacing: 0.04em;
+  }
+
+  /* 底部 */
+  .footer {
+    margin-top: 70px;
+    padding-top: 28px;
+    border-top: 1px solid var(--gold);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "Noto Serif TC", serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing: 0.3em;
+  }
+  .footer .mono {
+    font-family: "JetBrains Mono", monospace;
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  /* 響應式 */
+  @media (max-width: 1100px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-side { display: none; }
+    .pouches { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── 鞭炮動畫 ── */
+  #fireworks {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.8s ease;
+  }
+  #fireworks.done { opacity: 0; }
+  /* 鞭炮串：左右兩條 */
+  .firecracker-string {
+    position: fixed;
+    top: 0;
+    width: 36px;
+    height: 0;
+    z-index: 0;
+    pointer-events: none;
+    animation: stringDrop 0.6s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+
+  /* 音效提示 */
+  #sound-hint {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 200;
+    background: var(--ink);
+    color: var(--paper-soft);
+    font-family: "Noto Serif TC", serif;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    padding: 10px 18px;
+    border: 1px solid var(--gold);
+    box-shadow: 3px 3px 0 var(--gold);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .4s, transform .4s;
+    pointer-events: none;
+  }
+  #sound-hint.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  #sound-hint:hover { background: var(--vermilion-deep); }
+  .firecracker-string.left  { left: 24px; }
+  .firecracker-string.right { right: 24px; }
+  @keyframes stringDrop {
+    0%   { height: 0; }
+    100% { height: 380px; }
+  }
+  .firecracker-string .rope {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: #5a3a1a;
+    transform: translateX(-50%);
+  }
+  .firecracker-string .fc {
+    position: absolute;
+    left: 50%;
+    width: 20px;
+    height: 36px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, #d83a30 0%, #b8302a 50%, #8e2018 100%);
+    border-radius: 3px;
+    box-shadow:
+      inset 0 0 0 1px rgba(0,0,0,0.2),
+      0 2px 4px rgba(0,0,0,0.25);
+  }
+  .firecracker-string .fc::before,
+  .firecracker-string .fc::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1.5px;
+    height: 5px;
+    background: #d4b06a;
+  }
+  .firecracker-string .fc::before { top: -4px; }
+  .firecracker-string .fc::after  { bottom: -4px; }
+  .firecracker-string .fc.pop {
+    animation: fcPop 0.3s ease-out forwards;
+  }
+  @keyframes fcPop {
+    0%   { transform: translateX(-50%) scale(1); opacity: 1; }
+    50%  { transform: translateX(-50%) scale(1.4); filter: brightness(2.5); }
+    100% { transform: translateX(-50%) scale(0); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 鞭炮動畫畫布 -->
+<canvas id="fireworks"></canvas>
+
+<!-- 兩串掛在頂部的鞭炮 -->
+<div class="firecracker-string left" id="fc-left">
+  <div class="rope"></div>
+</div>
+<div class="firecracker-string right" id="fc-right">
+  <div class="rope"></div>
+</div>
+
+<!-- 音效提示（被瀏覽器擋住時顯示） -->
+<div id="sound-hint">🔊　點 此 開 啟 鞭 炮 聲</div>
+
+<div class="page" data-screen-label="首頁">
+
+  <!-- 頂部 -->
+  <div class="topbar">
+    <div class="side">會考衝刺・教師講堂</div>
+    <div class="brand">
+      <span class="cn">文昌錦囊</span>
+      <span class="en">— Wenchang's Ten Pouches —</span>
+    </div>
+    <div class="side right">英文必勝十訣 ・ 二〇二六</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-side left">
+      <div class="couplet left">十年寒窗無人問</div>
+    </div>
+
+    <div class="deity-wrap">
+      <div class="deity-frame">
+        <div class="top-tag">文昌帝君</div>
+        <span class="corner tl"></span>
+        <span class="corner tr"></span>
+        <span class="corner bl"></span>
+        <span class="corner br"></span>
+        <img class="deity-static" src="deity-preload.webp" alt="文昌帝君">
+        <image-slot id="deity"
+                    placeholder="拖入文昌帝君圖像"
+                    shape="rect"
+                    fit="contain"></image-slot>
+      </div>
+
+      <div class="bubble">
+        <p class="cn">考的都會<span class="punct"></span>猜的都對</p>
+        <p class="en">Smart in the test, lucky in the guess.</p>
+      </div>
+    </div>
+
+    <div class="hero-side right">
+      <div class="couplet right">一舉成名天下知</div>
+    </div>
+  </div>
+
+  <!-- 錦囊區 -->
+  <div class="section-head">
+    <div class="rule"></div>
+    <div class="label">
+      <span class="cn">請  領  錦  囊</span>
+      <span class="en">— Choose Your Pouch —</span>
+    </div>
+    <div class="rule"></div>
+  </div>
+
+  <div class="pouches" id="pouches"></div>
+
+  <div class="footer">
+    <span>文昌帝君  •  庇佑學子</span>
+    <span class="mono">10 pouches · click to open</span>
+  </div>
+</div>
+
+<!-- 錦囊 SVG 樣板（隱藏） -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- 錦囊圖形：作為符號使用 -->
+    <symbol id="pouch-shape" viewBox="0 0 130 170">
+      <!-- 上方束口繩 (掛繩) -->
+      <path d="M 65 4 C 50 14, 50 24, 65 30 C 80 24, 80 14, 65 4 Z"
+            fill="none" stroke="#8e2018" stroke-width="1.8"/>
+      <!-- 上方束口 (梯形) -->
+      <path d="M 42 30 L 88 30 L 82 44 L 48 44 Z"
+            fill="#8e2018" stroke="#5c1611" stroke-width="1.2"/>
+      <!-- 束繩橫線 -->
+      <line x1="44" y1="38" x2="86" y2="38" stroke="#d4b06a" stroke-width="1.5"/>
+      <!-- 錦囊主體 -->
+      <path d="M 35 44
+               C 18 52, 16 80, 22 110
+               C 28 140, 50 162, 65 162
+               C 80 162, 102 140, 108 110
+               C 114 80, 112 52, 95 44
+               Z"
+            class="bag-body"
+            fill="#b8302a" stroke="#5c1611" stroke-width="1.5"/>
+      <!-- 內側陰影 -->
+      <path d="M 35 44
+               C 18 52, 16 80, 22 110
+               C 28 140, 50 162, 65 162
+               C 80 162, 102 140, 108 110
+               C 114 80, 112 52, 95 44
+               Z"
+            fill="url(#bagShade)" opacity="0.6"/>
+      <!-- 金邊紋飾 -->
+      <path d="M 30 60 Q 65 70, 100 60" fill="none" stroke="#d4b06a" stroke-width="1" opacity="0.7"/>
+      <path d="M 26 144 Q 65 160, 104 144" fill="none" stroke="#d4b06a" stroke-width="1" opacity="0.6"/>
+      <!-- 下方流蘇 -->
+      <line x1="58" y1="162" x2="56" y2="172" stroke="#d4b06a" stroke-width="2"/>
+      <line x1="65" y1="162" x2="65" y2="174" stroke="#d4b06a" stroke-width="2"/>
+      <line x1="72" y1="162" x2="74" y2="172" stroke="#d4b06a" stroke-width="2"/>
+    </symbol>
+    <radialGradient id="bagShade" cx="0.35" cy="0.3" r="0.9">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.3"/>
+      <stop offset="60%" stop-color="#b8302a" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#5c1611" stop-opacity="0.4"/>
+    </radialGradient>
+  </defs>
+</svg>
+
+<script>
+  const POUCHES = [
+    { num: "壹", en: "I",    title: "拆句辨動詞",  enSub: "Parse Long Sentences", href: "tip-01.html" },
+    { num: "貳", en: "II",   title: "時態 × 被動",  enSub: "Tense × Passive",     href: "tip-02.html" },
+    { num: "參", en: "III",  title: "花費動詞",     enSub: "Spend / Cost / Take", href: "tip-03.html" },
+    { num: "肆", en: "IV",   title: "使役 vs 要求", enSub: "Make / Ask Verbs",    href: "tip-04.html" },
+    { num: "伍", en: "V",    title: "感官動詞",     enSub: "See / Hear / Watch",  href: "tip-05.html" },
+    { num: "陸", en: "VI",   title: "附加問句",     enSub: "Tag Questions",       href: "tip-06.html" },
+    { num: "柒", en: "VII",  title: "關代 that",    enSub: "Relative 'That'",     href: "tip-07.html" },
+    { num: "捌", en: "VIII", title: "閱讀代名詞",   enSub: "Reading & Tone",      href: "tip-08.html" },
+    { num: "玖", en: "IX",   title: "語意轉折",     enSub: "Instead / Though",    href: "tip-09.html" },
+    { num: "拾", en: "X",    title: "字義變身",     enSub: "Word Transformers",   href: "tip-10.html" },
+  ];
+
+  // 將每個錦囊渲染為一個元件
+  const grid = document.getElementById("pouches");
+  POUCHES.forEach((p, i) => {
+    const a = document.createElement("a");
+    a.className = "pouch";
+    a.href = p.href;
+    a.setAttribute("aria-label", `第 ${i+1} 錦囊：${p.title}`);
+    a.innerHTML = `
+      <svg class="pouch-svg" viewBox="0 0 130 175" aria-hidden="true">
+        <use href="#pouch-shape"/>
+        <text x="65" y="110" text-anchor="middle"
+              font-family="Noto Serif TC, serif"
+              font-weight="900"
+              font-size="34"
+              fill="#f8e9c4"
+              style="letter-spacing:0">${p.num}</text>
+        <text x="65" y="130" text-anchor="middle"
+              font-family="Lora, serif"
+              font-style="italic"
+              font-size="11"
+              fill="#d4b06a">${p.en}</text>
+      </svg>
+      <div class="pouch-meta">
+        <div class="pouch-num">№ ${String(i+1).padStart(2,"0")}</div>
+        <div class="pouch-title">${p.title}</div>
+        <div class="pouch-en">${p.enSub}</div>
+      </div>
+    `;
+    // 錯落感：奇偶交錯微旋
+    a.querySelector('.pouch-svg').style.transform = `rotate(${i%2===0?-2:2}deg)`;
+    grid.appendChild(a);
+  });
+
+  // ── 文昌帝君圖：讀取圖片實際比例，自動貼合相框 ──
+  (function fitDeityFrame(){
+    const slot = document.getElementById('deity');
+    const frame = document.querySelector('.deity-frame');
+    const staticImg = document.querySelector('.deity-static');
+    const MAX_W = 460, MAX_H = 580, MIN_W = 280;
+    if (!frame) return;
+
+    function applyRatio(ratio) {
+      let w = MAX_W, h = w / ratio;
+      if (h > MAX_H) { h = MAX_H; w = h * ratio; }
+      if (w < MIN_W) { w = MIN_W; h = w / ratio; }
+      frame.style.width  = Math.round(w) + 'px';
+      frame.style.height = Math.round(h) + 'px';
+    }
+
+    // 1) 立刻從靜態 preload 圖片取比例（最快）
+    function fromStatic() {
+      if (staticImg && staticImg.naturalWidth && staticImg.naturalHeight) {
+        applyRatio(staticImg.naturalWidth / staticImg.naturalHeight);
+        return true;
+      }
+      return false;
+    }
+    if (!fromStatic() && staticImg) {
+      staticImg.addEventListener('load', fromStatic);
+    }
+
+    // 2) 等使用者拖入新圖片後，從 image-slot 取比例
+    function fromSlot() {
+      if (!slot) return;
+      const img = slot.shadowRoot?.querySelector('img') || slot.querySelector('img');
+      if (!img || !img.naturalWidth || !img.naturalHeight) return;
+      applyRatio(img.naturalWidth / img.naturalHeight);
+      // image-slot 已載入了新圖 → 隱藏 preload 靜態圖
+      if (staticImg) staticImg.style.display = 'none';
+    }
+    const tryResize = () => {
+      fromSlot();
+      const img = slot?.shadowRoot?.querySelector('img') || slot?.querySelector('img');
+      if (img && !img.dataset._fitHooked) {
+        img.dataset._fitHooked = '1';
+        img.addEventListener('load', fromSlot);
+      }
+    };
+    if (slot) {
+      new MutationObserver(tryResize).observe(slot, {attributes: true, childList: true, subtree: true});
+      if (slot.shadowRoot) new MutationObserver(tryResize).observe(slot.shadowRoot, {childList: true, subtree: true});
+      setTimeout(tryResize, 100);
+      setTimeout(tryResize, 600);
+    }
+  })();
+
+  // ── 鞭炮動畫（開場） ──
+  (function fireworks(){
+    const canvas = document.getElementById('fireworks');
+    const ctx = canvas.getContext('2d');
+    let DPR = Math.min(window.devicePixelRatio || 1, 2);
+    let W, H;
+    function resize() {
+      W = canvas.clientWidth = window.innerWidth;
+      H = canvas.clientHeight = window.innerHeight;
+      canvas.width = W * DPR;
+      canvas.height = H * DPR;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // ── 音效系統 ──
+    const audio = (function(){
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return { pop: ()=>{}, boom: ()=>{}, resume: ()=>{} };
+      const ctxA = new AC();
+      // 主音量
+      const master = ctxA.createGain();
+      master.gain.value = 0.55;
+      master.connect(ctxA.destination);
+
+      function popSound(when, vol){
+        // 鞭炮「啪」聲 = 短促噪音 + bandpass
+        const dur = 0.09;
+        const len = Math.floor(ctxA.sampleRate * dur);
+        const buf = ctxA.createBuffer(1, len, ctxA.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i=0;i<len;i++){
+          const env = Math.pow(1 - i/len, 2.5);
+          d[i] = (Math.random()*2 - 1) * env;
+        }
+        const src = ctxA.createBufferSource();
+        src.buffer = buf;
+        const bp = ctxA.createBiquadFilter();
+        bp.type = 'bandpass';
+        bp.frequency.value = 1400 + Math.random()*1200;
+        bp.Q.value = 0.7;
+        const g = ctxA.createGain();
+        g.gain.value = vol;
+        src.connect(bp).connect(g).connect(master);
+        src.start(when);
+        src.stop(when + dur + 0.02);
+      }
+
+      function boomSound(when, vol){
+        // 低頻悶響（大爆炸）
+        const dur = 0.35;
+        const o = ctxA.createOscillator();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(120, when);
+        o.frequency.exponentialRampToValueAtTime(40, when + dur);
+        const g = ctxA.createGain();
+        g.gain.setValueAtTime(0, when);
+        g.gain.linearRampToValueAtTime(vol, when + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.001, when + dur);
+        o.connect(g).connect(master);
+        o.start(when);
+        o.stop(when + dur + 0.05);
+
+        // 加一層噪音爆破
+        const len = Math.floor(ctxA.sampleRate * 0.15);
+        const buf = ctxA.createBuffer(1, len, ctxA.sampleRate);
+        const dd = buf.getChannelData(0);
+        for (let i=0;i<len;i++){
+          dd[i] = (Math.random()*2-1) * Math.pow(1 - i/len, 1.5);
+        }
+        const n = ctxA.createBufferSource();
+        n.buffer = buf;
+        const lp = ctxA.createBiquadFilter();
+        lp.type = 'lowpass';
+        lp.frequency.value = 800;
+        const ng = ctxA.createGain();
+        ng.gain.value = vol * 0.8;
+        n.connect(lp).connect(ng).connect(master);
+        n.start(when);
+      }
+
+      return {
+        get state() { return ctxA.state; },
+        resume: () => ctxA.resume(),
+        time: () => ctxA.currentTime,
+        pop:  (delaySec=0, vol=0.5) => popSound(ctxA.currentTime + delaySec, vol),
+        boom: (delaySec=0, vol=0.5) => boomSound(ctxA.currentTime + delaySec, vol),
+      };
+    })();
+
+    // 嘗試自動播放；若被擋住，顯示提示
+    const hint = document.getElementById('sound-hint');
+    let audioStarted = false;
+    function startAudio(){
+      audio.resume().then(()=>{
+        audioStarted = audio.state === 'running';
+        if (audioStarted) hint?.classList.remove('show');
+      }).catch(()=>{});
+    }
+    // 先嘗試一次
+    audio.resume().then(()=>{
+      if (audio.state === 'running') {
+        audioStarted = true;
+      } else {
+        hint?.classList.add('show');
+      }
+    }).catch(()=>{
+      hint?.classList.add('show');
+    });
+    // 任何互動後啟動
+    ['click','keydown','touchstart'].forEach(ev =>
+      window.addEventListener(ev, startAudio, { once: false })
+    );
+    hint?.addEventListener('click', () => {
+      startAudio();
+      hint.classList.remove('show');
+    });
+
+    const parts = [];
+    const RED   = ['#b8302a','#d83a30','#e85a3a','#8e2018','#c8332a'];
+    const GOLD  = ['#d4b06a','#e8c97b','#b08234','#f3d98a'];
+    const PAPER = ['#b8302a','#d83a30','#c8332a','#e8c97b','#d4b06a'];
+
+    function rand(a,b){ return a + Math.random()*(b-a); }
+    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+    // 一次爆炸：圓形噴射 + 紙屑
+    function burst(x, y){
+      // 音效：大爆炸（boom + pop）
+      if (audioStarted) {
+        audio.boom(0, 0.5 + Math.random()*0.2);
+        audio.pop(0.02, 0.6);
+        audio.pop(0.06, 0.4);
+      }
+      const n = 40 + Math.floor(Math.random()*20);
+      for (let i=0;i<n;i++){
+        const a = (Math.PI*2)*i/n + Math.random()*0.3;
+        const v = rand(2.2, 5.5);
+        parts.push({
+          kind: 'spark',
+          x, y,
+          vx: Math.cos(a)*v,
+          vy: Math.sin(a)*v,
+          life: rand(0.7, 1.3),
+          age: 0,
+          size: rand(1.6, 3.2),
+          color: Math.random() < 0.6 ? pick(RED) : pick(GOLD),
+          trail: rand(8, 16),
+        });
+      }
+      // 紙屑：方塊，受重力，旋轉
+      for (let i=0;i<22;i++){
+        const a = rand(-Math.PI, Math.PI);
+        const v = rand(2, 5);
+        parts.push({
+          kind: 'paper',
+          x, y,
+          vx: Math.cos(a)*v,
+          vy: Math.sin(a)*v - rand(0,1),
+          rot: rand(0, Math.PI*2),
+          vr:  rand(-0.25, 0.25),
+          life: rand(2.2, 3.2),
+          age: 0,
+          w: rand(5, 9),
+          h: rand(8, 14),
+          color: pick(PAPER),
+        });
+      }
+      // 中心閃光（短暫白光）
+      parts.push({
+        kind: 'flash',
+        x, y,
+        age: 0,
+        life: 0.25,
+        r: rand(40, 70),
+      });
+    }
+
+    // 安排數波爆炸 + 串鞭炮逐顆爆破
+    const t0 = performance.now();
+    const schedule = [
+      { t: 0,   x: W*0.50, y: H*0.55 },
+      { t: 250, x: W*0.18, y: H*0.40 },
+      { t: 500, x: W*0.82, y: H*0.42 },
+      { t: 800, x: W*0.30, y: H*0.30 },
+      { t: 1050,x: W*0.70, y: H*0.30 },
+      { t: 1350,x: W*0.50, y: H*0.20 },
+      { t: 1700,x: W*0.15, y: H*0.62 },
+      { t: 1850,x: W*0.85, y: H*0.62 },
+      { t: 2200,x: W*0.50, y: H*0.50 },
+    ];
+    schedule.forEach(s => setTimeout(()=> burst(s.x, s.y), s.t));
+
+    // 串鞭炮逐顆爆破（在串掛下後 0.6s 開始）
+    function buildString(id, side){
+      const el = document.getElementById(id);
+      const n = 10;
+      for (let i=0;i<n;i++){
+        const fc = document.createElement('div');
+        fc.className = 'fc';
+        fc.style.top = (20 + i*34) + 'px';
+        el.appendChild(fc);
+      }
+      const x = side === 'left' ? 42 : window.innerWidth - 42;
+      setTimeout(()=>{
+        el.querySelectorAll('.fc').forEach((fc, i)=>{
+          setTimeout(()=>{
+            fc.classList.add('pop');
+            // 音效：每顆鞭炮的小「啪」聲
+            if (audioStarted) audio.pop(0, 0.35 + Math.random()*0.15);
+            // 同步噴出小爆炸
+            const y = 20 + i*34 + 18;
+            const mini = 15;
+            for (let k=0;k<mini;k++){
+              const a = (Math.PI*2)*k/mini;
+              const v = rand(1.5, 3);
+              parts.push({
+                kind:'spark', x, y,
+                vx: Math.cos(a)*v, vy: Math.sin(a)*v - 1,
+                life: rand(0.4,0.8), age: 0,
+                size: rand(1.2, 2.2),
+                color: Math.random()<0.5?pick(RED):pick(GOLD),
+                trail: 6,
+              });
+            }
+          }, i*110);
+        });
+      }, 600);
+    }
+    buildString('fc-left', 'left');
+    buildString('fc-right','right');
+
+    let lastT = performance.now();
+    function loop(now){
+      const dt = Math.min(0.05, (now - lastT)/1000);
+      lastT = now;
+      // 用半透明黑製造殘影 — 但因為我們要透明背景，改用 globalCompositeOperation
+      ctx.clearRect(0, 0, W, H);
+
+      // 後製：在透明畫布上畫粒子；殘影用粒子自身 alpha 處理
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const p = parts[i];
+        p.age += dt;
+        if (p.age >= p.life) { parts.splice(i,1); continue; }
+        const tnorm = p.age / p.life;
+
+        if (p.kind === 'spark') {
+          p.vy += dt * 1.4;            // 輕微重力
+          p.vx *= (1 - dt*0.6);        // 空氣阻力
+          p.vy *= (1 - dt*0.4);
+          p.x += p.vx;
+          p.y += p.vy;
+          const alpha = 1 - tnorm;
+          ctx.globalCompositeOperation = 'lighter';
+          // 拖尾
+          const tx = p.x - p.vx*0.8;
+          const ty = p.y - p.vy*0.8;
+          const grad = ctx.createLinearGradient(tx, ty, p.x, p.y);
+          grad.addColorStop(0, hexA(p.color, 0));
+          grad.addColorStop(1, hexA(p.color, alpha));
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = p.size;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(tx, ty);
+          ctx.lineTo(p.x, p.y);
+          ctx.stroke();
+          ctx.globalCompositeOperation = 'source-over';
+        } else if (p.kind === 'paper') {
+          p.vy += dt * 3.0;            // 紙屑重力較大
+          p.vx *= (1 - dt*0.3);
+          p.x += p.vx;
+          p.y += p.vy;
+          p.rot += p.vr;
+          const alpha = tnorm < 0.85 ? 1 : (1 - (tnorm-0.85)/0.15);
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.fillStyle = hexA(p.color, alpha);
+          ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+          // 紙屑金邊
+          ctx.fillStyle = hexA('#d4b06a', alpha*0.4);
+          ctx.fillRect(-p.w/2, -p.h/2, p.w, 1.2);
+          ctx.restore();
+        } else if (p.kind === 'flash') {
+          const r = p.r * (0.4 + tnorm*1.4);
+          const alpha = (1 - tnorm) * 0.8;
+          const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+          g.addColorStop(0, `rgba(255,240,200,${alpha})`);
+          g.addColorStop(0.5, `rgba(255,180,120,${alpha*0.5})`);
+          g.addColorStop(1, `rgba(255,120,80,0)`);
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.fillStyle = g;
+          ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI*2); ctx.fill();
+          ctx.globalCompositeOperation = 'source-over';
+        }
+      }
+
+      // 動畫結束：粒子清空 且 已超過總時長 → 淡出 & 移除畫布
+      if (parts.length === 0 && (now - t0) > 3000) {
+        canvas.classList.add('done');
+        document.getElementById('fc-left')?.classList.add('done');
+        document.getElementById('fc-right')?.classList.add('done');
+        setTimeout(()=>{
+          canvas.remove();
+          document.getElementById('fc-left')?.remove();
+          document.getElementById('fc-right')?.remove();
+        }, 900);
+        return;
+      }
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    function hexA(hex, a){
+      const h = hex.replace('#','');
+      const r = parseInt(h.substr(0,2),16);
+      const g = parseInt(h.substr(2,2),16);
+      const b = parseInt(h.substr(4,2),16);
+      return `rgba(${r},${g},${b},${a})`;
+    }
+  })();
+</script>
+
+</body>
+</html>

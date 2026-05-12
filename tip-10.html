@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>錦囊 拾 ‧ 字義變身 ‧ 一字多義</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { padding-bottom: 80px; }
+  .page { max-width: 1080px; margin: 0 auto; padding: 36px 56px 60px; position: relative; z-index: 1; }
+
+  /* 頁眉 */
+  .topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--gold);
+    margin-bottom: 36px;
+  }
+  .home-link {
+    font-family: "Noto Serif TC", serif;
+    font-size: 14px;
+    color: var(--ink-soft);
+    letter-spacing: 0.3em;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .home-link:hover { color: var(--vermilion-deep); }
+  .home-link::before { content: "←"; font-family: serif; }
+  .pager {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+  }
+  .pager a { color: var(--ink-soft); margin: 0 6px; }
+  .pager a:hover { color: var(--vermilion-deep); }
+  .pager .cur { color: var(--vermilion-deep); font-weight: 600; }
+
+  /* 主標 */
+  .hero-tip {
+    display: grid;
+    grid-template-columns: 110px 1fr auto;
+    gap: 28px;
+    align-items: center;
+    margin-bottom: 44px;
+    padding: 28px 0 36px;
+    border-bottom: 1px dashed var(--gold);
+  }
+  .big-num {
+    display: grid;
+    place-items: center;
+    width: 110px; height: 110px;
+    border: 2px solid var(--vermilion);
+    background: var(--vermilion);
+    color: #f8e9c4;
+    font-family: "Noto Serif TC", serif;
+    font-weight: 900;
+    font-size: 56px;
+    line-height: 1;
+    box-shadow: 4px 4px 0 var(--gold);
+    transform: rotate(-2deg);
+  }
+  .titles h1 {
+    margin: 0 0 8px;
+    font-family: "Noto Serif TC", serif;
+    font-weight: 900;
+    font-size: 38px;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .titles .en {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+  }
+  .titles .crumb {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.3em;
+    margin-bottom: 8px;
+  }
+
+  /* 區塊 */
+  .block { margin-bottom: 36px; }
+  .block-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .block-tag {
+    background: var(--ink);
+    color: var(--paper-soft);
+    font-family: "Noto Serif TC", serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.4em;
+    padding: 6px 14px 6px 18px;
+  }
+  .block-tag.tag-jade { background: var(--jade); }
+  .block-yr {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--vermilion-deep);
+  }
+
+  /* 心法 box */
+  .method-box {
+    background: #fffaee;
+    border: 1px solid var(--gold);
+    box-shadow: 5px 5px 0 var(--paper-deep);
+    padding: 24px 28px;
+    font-family: "Noto Serif TC", serif;
+    font-size: 19px;
+    line-height: 1.9;
+    color: var(--ink);
+    position: relative;
+  }
+  .method-box::before {
+    content: "心 法";
+    position: absolute;
+    top: -14px; left: 24px;
+    background: var(--vermilion);
+    color: #fff8e6;
+    padding: 4px 14px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5em;
+    text-indent: 0.5em;
+  }
+  mark {
+    background: linear-gradient(transparent 55%, rgba(212,176,106,0.7) 55%);
+    color: var(--ink);
+    padding: 0 3px;
+  }
+  code {
+    font-family: "JetBrains Mono", monospace;
+    background: rgba(74,58,38,0.08);
+    color: var(--vermilion-deep);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.92em;
+  }
+
+  /* 表格 */
+  .rule-tab {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 17px;
+  }
+  .rule-tab th {
+    background: var(--ink);
+    color: var(--paper-soft);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+  }
+  .rule-tab td {
+    padding: 8px 12px;
+    border-bottom: 1px dotted var(--gold);
+  }
+  .rule-tab td:first-child {
+    font-weight: 700;
+    color: var(--vermilion-deep);
+    width: 80px;
+  }
+
+  /* Chip */
+  .chip {
+    display: inline-block;
+    background: var(--vermilion);
+    color: #fff8e6;
+    padding: 4px 12px;
+    margin: 3px 4px 3px 0;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+  }
+  .hint {
+    margin-top: 12px;
+    font-size: 16px;
+    color: var(--vermilion-deep);
+    font-style: italic;
+  }
+  .big-that {
+    display: inline-block;
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 30px;
+    color: var(--vermilion);
+    font-weight: 700;
+    vertical-align: middle;
+    margin: 0 6px;
+  }
+
+  /* 試題 */
+  .quiz {
+    background: var(--paper-soft);
+    border-left: 4px solid var(--vermilion);
+    padding: 20px 24px;
+    font-family: "Lora", "Noto Serif TC", serif;
+    font-size: 22px;
+    line-height: 1.6;
+    color: var(--ink);
+    margin: 0 0 18px;
+  }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--vermilion);
+    min-width: 100px;
+    text-align: center;
+    margin: 0 6px;
+    color: var(--vermilion);
+  }
+  .options {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 24px;
+  }
+  .opt {
+    font-family: "Lora", "Noto Serif TC", serif;
+    font-size: 18px;
+    color: var(--ink-soft);
+    padding: 10px 14px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .opt-k {
+    font-weight: 700;
+    color: var(--ink);
+    font-family: "Lora", serif;
+  }
+  .opt.correct {
+    border: 1px solid var(--jade);
+    background: rgba(74,107,77,0.06);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .opt.correct .opt-k { color: var(--jade); }
+  .opt-mark {
+    margin-left: auto;
+    font-family: "Noto Serif TC", serif;
+    font-size: 13px;
+    color: var(--jade);
+    letter-spacing: 0.2em;
+    font-weight: 700;
+  }
+
+  /* 解析 */
+  .steps {
+    list-style: none;
+    margin: 0; padding: 0;
+    counter-reset: step;
+  }
+  .steps li {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 18px;
+    padding: 14px 0;
+    border-bottom: 1px dotted var(--gold);
+    font-size: 18px;
+    line-height: 1.7;
+  }
+  .steps li:last-child { border-bottom: 0; }
+  .step-n {
+    display: grid; place-items: center;
+    width: 32px; height: 32px;
+    background: var(--jade);
+    color: #fff8e6;
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-weight: 700;
+    border-radius: 50%;
+  }
+  .step-t em { font-style: normal; background: rgba(184,48,42,0.10); padding: 0 4px; }
+  .step-t strong { color: var(--vermilion-deep); }
+
+  /* 字義變身專用 */
+  .word-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  .wordcard {
+    background: #fffaee;
+    border: 1px solid var(--gold);
+    box-shadow: 4px 4px 0 var(--paper-deep);
+    padding: 18px 20px;
+  }
+  .wordcard-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted var(--gold);
+  }
+  .word {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--vermilion);
+  }
+  .word-yr {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.15em;
+  }
+  .word-row {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 12px;
+    font-size: 15px;
+    padding: 4px 0;
+  }
+  .word-row .lbl {
+    font-family: "Noto Serif TC", serif;
+    font-weight: 700;
+    color: var(--ink-soft);
+    letter-spacing: 0.2em;
+  }
+  .word-row.twist .lbl { color: var(--vermilion-deep); }
+  .word-row.twist .val { color: var(--ink); font-weight: 600; }
+  .word-ex {
+    margin: 10px 0 0;
+    padding: 10px 12px;
+    background: var(--paper);
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.5;
+    border-left: 3px solid var(--gold);
+  }
+  .word-ex strong { color: var(--vermilion); font-style: normal; }
+
+  /* 頁腳 */
+  .nav-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 56px;
+    padding-top: 28px;
+    border-top: 1px solid var(--gold);
+  }
+  .nav-bottom a {
+    font-family: "Noto Serif TC", serif;
+    font-size: 14px;
+    color: var(--ink-soft);
+    letter-spacing: 0.3em;
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .nav-bottom a:hover { color: var(--vermilion-deep); }
+  .nav-bottom .home {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--gold);
+  }
+</style>
+</head>
+<body>
+
+<div class="page" data-screen-label="10 字義變身 ‧ 一字多義">
+
+  <div class="topbar">
+    <a class="home-link" href="index.html">返　回　文　昌</a>
+    <div class="pager">
+      <a href="tip-01.html">01</a> · <a href="tip-02.html">02</a> · <a href="tip-03.html">03</a> · <a href="tip-04.html">04</a> · <a href="tip-05.html">05</a> · <a href="tip-06.html">06</a> · <a href="tip-07.html">07</a> · <a href="tip-08.html">08</a> · <a href="tip-09.html">09</a> · <span class="cur">10</span>
+    </div>
+  </div>
+
+  <div class="hero-tip">
+    <div class="big-num">拾</div>
+    <div class="titles">
+      <div class="crumb">錦  囊  之  拾  ／  X</div>
+      <h1>字義變身 ‧ 一字多義</h1>
+      <div class="en">Word Transformers</div>
+    </div>
+    <div class="seal seal-lg">拾</div>
+  </div>
+
+  <section class="block">
+    <div class="method-box">會考最愛考<strong>熟字僻意</strong>。下列七個字，課本背的不是它真正想考的：</div>
+  </section>
+
+  
+  
+  <section class="block"><div class="word-grid">
+    <div class="wordcard">
+      <div class="wordcard-top">
+        <span class="word">Mean</span>
+        <span class="word-yr">107 會考</span>
+      </div>
+      <div class="word-row"><span class="lbl">一般義</span><span class="val">意指 (v.)</span></div>
+      <div class="word-row twist"><span class="lbl">變身義</span><span class="val">刻薄的、吝嗇的 (adj.)</span></div>
+      <p class="word-ex">"Don't be so <strong>mean</strong> to your little brother."</p>
+    </div>
+  
+    <div class="wordcard">
+      <div class="wordcard-top">
+        <span class="word">Fine</span>
+        <span class="word-yr">109 會考</span>
+      </div>
+      <div class="word-row"><span class="lbl">一般義</span><span class="val">好的 (adj.)</span></div>
+      <div class="word-row twist"><span class="lbl">變身義</span><span class="val">罰款 (n./v.)</span></div>
+      <p class="word-ex">"If you don't return the books on time, you will pay a <strong>fine</strong>."</p>
+    </div>
+  
+    <div class="wordcard">
+      <div class="wordcard-top">
+        <span class="word">Sound</span>
+        <span class="word-yr">112 會考</span>
+      </div>
+      <div class="word-row"><span class="lbl">一般義</span><span class="val">聲音 (n.)</span></div>
+      <div class="word-row twist"><span class="lbl">變身義</span><span class="val">健康的、熟睡的 (adj.)</span></div>
+      <p class="word-ex">"After hiking, they all had a <strong>sound</strong> sleep."</p>
+    </div>
+  
+    <div class="wordcard">
+      <div class="wordcard-top">
+        <span class="word">Last</span>
+        <span class="word-yr">110 會考</span>
+      </div>
+      <div class="word-row"><span class="lbl">一般義</span><span class="val">最後的 (adj.)</span></div>
+      <div class="word-row twist"><span class="lbl">變身義</span><span class="val">持續 (v.)</span></div>
+      <p class="word-ex">"The heavy rain <strong>lasted</strong> for three days."</p>
+    </div>
+  
+    <div class="wordcard">
+      <div class="wordcard-top">
+        <span class="word">Order</span>
+        <span class="word-yr">110 會考</span>
+      </div>
+      <div class="word-row"><span class="lbl">一般義</span><span class="val">點餐 (v.)</span></div>
+      <div class="word-row twist"><span class="lbl">變身義</span><span class="val">順序、秩序 (n.)</span></div>
+      <p class="word-ex">"List the names in alphabetical <strong>order</strong>."</p>
+    </div>
+  
+    <div class="wordcard">
+      <div class="wordcard-top">
+        <span class="word">Present</span>
+        <span class="word-yr">111 會考</span>
+      </div>
+      <div class="word-row"><span class="lbl">一般義</span><span class="val">禮物 (n.)</span></div>
+      <div class="word-row twist"><span class="lbl">變身義</span><span class="val">出席的 (adj.) / 呈現 (v.)</span></div>
+      <p class="word-ex">"Only a few members were <strong>present</strong> at the meeting."</p>
+    </div>
+  
+    <div class="wordcard">
+      <div class="wordcard-top">
+        <span class="word">Still</span>
+        <span class="word-yr">108 會考</span>
+      </div>
+      <div class="word-row"><span class="lbl">一般義</span><span class="val">仍然 (adv.)</span></div>
+      <div class="word-row twist"><span class="lbl">變身義</span><span class="val">靜止的、平靜的 (adj.)</span></div>
+      <p class="word-ex">"The water was so <strong>still</strong> that I could see my face in it."</p>
+    </div>
+  </div></section>
+
+  <nav class="nav-bottom">
+    <a href="tip-09.html">← 上一囊 ‧ 第 9 訣</a>
+    <a class="home" href="index.html">— 文昌錦囊 ‧ 十訣 —</a>
+    <a href="index.html">回首頁 →</a>
+  </nav>
+
+</div>
+</body>
+</html>
