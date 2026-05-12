@@ -791,9 +791,12 @@
     let audioStarted = false;
     let showStarted = false;
     function startAudio(){
-      return audio.resume().then(()=>{
-        audioStarted = audio.state === 'running';
-      }).catch(()=>{});
+      try {
+        const p = audio.resume();
+        if (p && p.then) {
+          p.then(()=>{ audioStarted = audio.state === 'running'; }).catch(()=>{});
+        }
+      } catch(e) {}
     }
     function startShow(){
       if (showStarted) return;
@@ -806,7 +809,10 @@
       buildString('fc-right','right');
     }
     function unlockAndStart(){
-      startAudio().then(startShow);
+      // 不等待音效就立刻開始：iPad Safari 的 resume() 有時不會 resolve
+      startAudio();
+      audioStarted = true;          // 樂觀標記，音效若失敗會自動靜音
+      startShow();
     }
     // 顯示開始提示（任何裝置都顯示，因為手機/平板必須先互動）
     hint?.classList.add('show');
