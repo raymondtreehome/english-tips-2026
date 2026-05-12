@@ -359,29 +359,63 @@
   /* 音效提示 */
   #sound-hint {
     position: fixed;
-    bottom: 28px;
-    right: 28px;
+    inset: 0;
     z-index: 200;
-    background: var(--ink);
-    color: var(--paper-soft);
-    font-family: "Noto Serif TC", serif;
-    font-size: 13px;
-    letter-spacing: 0.2em;
-    padding: 10px 18px;
-    border: 1px solid var(--gold);
-    box-shadow: 3px 3px 0 var(--gold);
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(37, 28, 18, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     opacity: 0;
-    transform: translateY(8px);
-    transition: opacity .4s, transform .4s;
     pointer-events: none;
+    transition: opacity .4s;
+    cursor: pointer;
+    font-family: "Noto Serif TC", serif;
   }
   #sound-hint.show {
     opacity: 1;
-    transform: translateY(0);
     pointer-events: auto;
   }
-  #sound-hint:hover { background: var(--vermilion-deep); }
+  #sound-hint .start-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 56px 72px;
+    background: var(--vermilion);
+    color: #f8e9c4;
+    border: 2px solid var(--gold-soft);
+    box-shadow:
+      0 0 0 6px var(--vermilion),
+      6px 6px 0 var(--gold);
+    transition: transform .25s ease, box-shadow .25s ease;
+    animation: pulse-btn 1.6s ease-in-out infinite;
+  }
+  #sound-hint .start-btn:hover {
+    transform: scale(1.05);
+  }
+  #sound-hint .start-icon {
+    font-size: 64px;
+    line-height: 1;
+  }
+  #sound-hint .start-cn {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.5em;
+    text-indent: 0.5em;
+  }
+  #sound-hint .start-en {
+    font-family: "Lora", serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold-soft);
+    letter-spacing: 0.15em;
+  }
+  @keyframes pulse-btn {
+    0%, 100% { box-shadow: 0 0 0 6px var(--vermilion), 6px 6px 0 var(--gold); }
+    50%      { box-shadow: 0 0 0 6px var(--vermilion), 6px 6px 0 var(--gold), 0 0 40px rgba(212,176,106,0.5); }
+  }
   .firecracker-string.left  { left: 24px; }
   .firecracker-string.right { right: 24px; }
   @keyframes stringDrop {
@@ -444,8 +478,14 @@
   <div class="rope"></div>
 </div>
 
-<!-- 音效提示（被瀏覽器擋住時顯示） -->
-<div id="sound-hint">🔊　點 此 開 啟 鞭 炮 聲</div>
+<!-- 開場提示（點此放鞭炮） -->
+<div id="sound-hint">
+  <div class="start-btn">
+    <div class="start-icon">🧧</div>
+    <div class="start-cn">點 此 開 場</div>
+    <div class="start-en">— Tap to begin —</div>
+  </div>
+</div>
 
 <div class="page" data-screen-label="首頁">
 
@@ -749,30 +789,30 @@
     // 嘗試自動播放；若被擋住，顯示提示
     const hint = document.getElementById('sound-hint');
     let audioStarted = false;
+    let showStarted = false;
     function startAudio(){
-      audio.resume().then(()=>{
+      return audio.resume().then(()=>{
         audioStarted = audio.state === 'running';
-        if (audioStarted) hint?.classList.remove('show');
       }).catch(()=>{});
     }
-    // 先嘗試一次
-    audio.resume().then(()=>{
-      if (audio.state === 'running') {
-        audioStarted = true;
-      } else {
-        hint?.classList.add('show');
-      }
-    }).catch(()=>{
-      hint?.classList.add('show');
-    });
-    // 任何互動後啟動
-    ['click','keydown','touchstart'].forEach(ev =>
-      window.addEventListener(ev, startAudio, { once: false })
+    function startShow(){
+      if (showStarted) return;
+      showStarted = true;
+      hint?.classList.remove('show');
+      t0 = performance.now();
+      // 啟動鞭炮與排程
+      schedule.forEach(s => setTimeout(()=> burst(s.x, s.y), s.t));
+      buildString('fc-left', 'left');
+      buildString('fc-right','right');
+    }
+    function unlockAndStart(){
+      startAudio().then(startShow);
+    }
+    // 顯示開始提示（任何裝置都顯示，因為手機/平板必須先互動）
+    hint?.classList.add('show');
+    ['click','keydown','touchstart','pointerdown'].forEach(ev =>
+      window.addEventListener(ev, unlockAndStart, { once: true })
     );
-    hint?.addEventListener('click', () => {
-      startAudio();
-      hint.classList.remove('show');
-    });
 
     const parts = [];
     const RED   = ['#b8302a','#d83a30','#e85a3a','#8e2018','#c8332a'];
@@ -835,7 +875,7 @@
     }
 
     // 安排數波爆炸 + 串鞭炮逐顆爆破
-    const t0 = performance.now();
+    let t0 = performance.now();
     const schedule = [
       { t: 0,   x: W*0.50, y: H*0.55 },
       { t: 250, x: W*0.18, y: H*0.40 },
@@ -847,8 +887,7 @@
       { t: 1850,x: W*0.85, y: H*0.62 },
       { t: 2200,x: W*0.50, y: H*0.50 },
     ];
-    schedule.forEach(s => setTimeout(()=> burst(s.x, s.y), s.t));
-
+    // ↑ 排程由 startShow() 觸發，不在這裡立即執行
     // 串鞭炮逐顆爆破（在串掛下後 0.6s 開始）
     function buildString(id, side){
       const el = document.getElementById(id);
@@ -885,8 +924,7 @@
         });
       }, 600);
     }
-    buildString('fc-left', 'left');
-    buildString('fc-right','right');
+    // buildString 由 startShow() 在使用者點擊後呼叫
 
     let lastT = performance.now();
     function loop(now){
@@ -955,7 +993,7 @@
       }
 
       // 動畫結束：粒子清空 且 已超過總時長 → 淡出 & 移除畫布
-      if (parts.length === 0 && (now - t0) > 3000) {
+      if (showStarted && parts.length === 0 && (now - t0) > 3000) {
         canvas.classList.add('done');
         document.getElementById('fc-left')?.classList.add('done');
         document.getElementById('fc-right')?.classList.add('done');
